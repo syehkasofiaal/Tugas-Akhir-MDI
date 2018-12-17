@@ -1,0 +1,14 @@
+#Jumlah mhs keseluruhan
+import pyodbc
+import pandas as pd
+import matplotlib.pyplot as plt
+
+conn = pyodbc.connect("Driver={SQL Server};"
+                      "Server=DESKTOP-GJ6RFA5;"
+                      "Database=db_final;"
+                      "Trusted_Connection=yes;")
+cursor = conn.cursor()
+sql = cursor.execute("select count (distinct mahasiswa) FROM dbo.MHS")
+result = sql.fetchall() 
+for row in result:
+     print(row)

@@ -1,0 +1,16 @@
+#Mata kuliah apa saja yang diampu oleh dosen X
+import pyodbc
+import pandas as pd
+import matplotlib.pyplot as plt
+
+conn = pyodbc.connect("Driver={SQL Server};"
+                      "Server=DESKTOP-GJ6RFA5;"
+                      "Database=db_final;"
+                      "Trusted_Connection=yes;")
+
+cursor = conn.cursor()
+sql = cursor.execute("SELECT DISTINCT Matakuliah FROM dbo.Dosen where Dosen='Ahmad Muklason, Ph.D 198203022009121009'")
+result = sql.fetchall()
+
+for row in result:
+     print(row)

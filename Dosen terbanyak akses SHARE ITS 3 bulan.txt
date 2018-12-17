@@ -1,0 +1,24 @@
+#Cari dosen dengan jumlah terbanyak akses share its selama 3 bulan
+import pyodbc
+import pandas as pd
+import matplotlib.pyplot as plt
+
+conn = pyodbc.connect("Driver={SQL Server};"
+                      "Server=DESKTOP-GJ6RFA5;"
+                      "Database=db_final;"
+                      "Trusted_Connection=yes;")
+
+cursor = conn.cursor()
+sql = cursor.execute("SELECT TOP 5 d.Dosen, COUNT(*) AS jml_akses FROM dbo.Dosen d join dbo.Login l on d.Dosen=l.users WHERE l.days <= 190 GROUP BY d.Dosen HAVING (COUNT(d.Dosen) > 1) ORDER BY jml_akses DESC")
+result = sql.fetchall()
+df=pd.DataFrame([ij for ij in i] for i in result)
+df.rename(columns={0: 'Jumlah', 1:'Dosen'}, inplace = True)
+
+y = df['Dosen']
+x = df['Jumlah']
+plt.title ('Dosen yang Terbanyak Mengakses SHARE ITS Selama 3 Bulan Terakhir')
+df
+plt.barh(x, y)
+plt.show()
+
+df

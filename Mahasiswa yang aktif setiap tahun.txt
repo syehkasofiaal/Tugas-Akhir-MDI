@@ -1,0 +1,23 @@
+#Jumlah mhs yang aktif menggunakan SHARE ITS tiap tahun
+import pyodbc
+import pandas as pd
+import matplotlib.pyplot as plt
+
+conn = pyodbc.connect("Driver={SQL Server};"
+                      "Server=;"
+                      "Database=db_final;"
+                      "Trusted_Connection=yes;")
+cursor = conn.cursor()
+sql = cursor.execute("SELECT distinct  tahun, count(mahasiswa) FROM [db_final].[dbo].[hasil2] group by tahun order by tahun ")
+rows = sql.fetchall() 
+df = pd.DataFrame( [[ij for ij in i] for i in rows] )
+df.rename(columns={0: 'Tahun', 1: 'Jumlah'}, inplace=True)
+x = df['Tahun']
+y = df['Jumlah']
+
+plt.title ('Jumlah Mahasiswa yang Aktif Menggunakan SHARE ITS')
+plt.plot(x, y,  c='blue')
+
+plt.show()
+
+df

@@ -1,0 +1,22 @@
+#Daftar 5 mahasiswa yang sering mengakses ShareITS pada bulan Nopember
+import pyodbc
+import pandas as pd
+import matplotlib.pyplot as plt
+
+conn = pyodbc.connect("Driver={SQL Server};"
+                      "Server=DESKTOP-GJ6RFA5;"
+                      "Database=db_final;"
+                      "Trusted_Connection=yes;")
+cursor = conn.cursor()
+sql = cursor.execute("SELECT TOP (5) Mahasiswa, count (Tanggal) as jumlah, tanggal from dbo.MHS where Month(Tanggal)=11 and year(Tanggal)= 2018 group by Mahasiswa, tanggal order by jumlah desc")
+result = sql.fetchall()
+df=pd.DataFrame([ij for ij in i] for i in result)
+df.rename(columns={0: 'Mahasiswa', 1:'Jumlah', 2:'Tanggal'}, inplace = True)
+y = df['Jumlah']
+x = df['Mahasiswa']
+plt.title ('Mahasiswa yang Sering Mengakses ShareITS pada Bulan Nopember')
+df
+plt.barh(x, y)
+plt.show()
+
+df
